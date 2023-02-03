@@ -9,7 +9,7 @@ class Customer(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=10)
     username = models.CharField(max_length=20)
-    password = models.CharField(max_length=20, widget=forms.PasswordInput)
+    password = forms.CharField(max_length=20, widget=forms.PasswordInput)
 
 
 class Address(models.Model):
