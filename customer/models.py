@@ -19,3 +19,4 @@ class Address(models.Model):
     alley = models.CharField(max_length=50)
     num = models.CharField(max_length=5)
     postal_code = models.CharField(max_length=10)
+    customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE)
