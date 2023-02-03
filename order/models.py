@@ -1,5 +1,6 @@
 from django.db import models
 from customer.models import Customer, Address
+from product.models import Product
 
 
 # Create your models here.
@@ -18,3 +19,9 @@ class Order(models.Model):
     customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE)
     address_id = models.ForeignKey(Address, on_delete=models.CASCADE)
     discount_id = models.ForeignKey(Discount_code, on_delete=models.CASCADE)
+
+
+class Order_detail(models.Model):
+    order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+    Quantity = models.IntegerField()
