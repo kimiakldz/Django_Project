@@ -12,3 +12,10 @@ class Customer(models.Model):
     password = models.CharField(max_length=20, widget=forms.PasswordInput)
 
 
+class Address(models.Model):
+    province = models.CharField(max_length=50)
+    city = models.CharField(max_length=50)
+    street = models.CharField(max_length=50)
+    alley = models.CharField(max_length=50)
+    num = models.CharField(max_length=5)
+    postal_code = models.CharField(max_length=10)
