@@ -9,12 +9,17 @@ class Category(models.Model):
     parent_id = models.ForeignKey('self', on_delete=models.CASCADE)
 
 
+class Discount(models.Model):
+    value = models.FloatField()
+    type = models.FloatField()
+    max = models.FloatField()
+
+
 class Product(models.Model):
     name = models.CharField(max_length=50)
     price = models.FloatField()
     description = models.TextField()
     image = models.ImageField(upload_to="")
     Stock = models.IntegerField()
-    price_dis = models.FloatField()
-    percent_dis = models.FloatField()
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
+    discount_id = models.ForeignKey(Discount, on_delete=models.CASCADE)
