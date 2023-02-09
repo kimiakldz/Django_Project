@@ -13,7 +13,7 @@ class Product(models.Model):
     name = models.CharField(max_length=50)
     price = models.FloatField()
     description = models.TextField()
-    image = models.CharField(max_length=250)
+    image = models.ImageField(upload_to="")
     Stock = models.IntegerField()
     price_dis = models.FloatField()
     percent_dis = models.FloatField()

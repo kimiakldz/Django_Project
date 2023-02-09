@@ -1,5 +1,5 @@
 from django.db import models
-from customer.models import Customer, Address
+from customers.models import Customer, Address
 from product.models import Product
 
 
@@ -21,7 +21,7 @@ class Order(models.Model):
     discount_id = models.ForeignKey(Discount_code, on_delete=models.CASCADE)
 
 
-class Order_detail(models.Model):
+class OrderDetail(models.Model):
     order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     Quantity = models.IntegerField()
