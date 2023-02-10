@@ -7,7 +7,7 @@ class Customer(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField()
-    phone = models.CharField(max_length=10)
+    phone = models.CharField(max_length=10, null=True, blank=True)
     username = models.CharField(max_length=20)
     password = forms.CharField(max_length=20, widget=forms.PasswordInput)
 
@@ -20,8 +20,8 @@ class Address(models.Model):
     city = models.CharField(max_length=50)
     street = models.CharField(max_length=50)
     alley = models.CharField(max_length=50)
-    num = models.CharField(max_length=5)
-    postal_code = models.CharField(max_length=10)
+    num = models.CharField(max_length=5, null=True, blank=True)
+    postal_code = models.CharField(max_length=10, null=True, blank=True)
     customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
     def __str__(self):
