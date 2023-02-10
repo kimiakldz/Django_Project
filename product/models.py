@@ -27,7 +27,7 @@ class Product(models.Model):
     description = models.TextField(null=True, blank=True)
     image = models.ImageField(upload_to="static/image", null=True, blank=True)
     Stock = models.IntegerField()
-    category_id = models.ForeignKey(Category, on_delete=models.SET_NULL)
+    category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
     discount_id = models.ForeignKey(Discount, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
