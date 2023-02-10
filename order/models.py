@@ -11,6 +11,9 @@ class DiscountCode(models.Model):
     expire_date = models.DateField()
     one_time = models.BooleanField()
 
+    def __str__(self):
+        return f"{self.type}: {self.value}"
+
 
 class Order(models.Model):
     total_price = models.FloatField()
@@ -18,6 +21,9 @@ class Order(models.Model):
     status = models.TextChoices('OrderStatus', 'Ordered InProgress Sent Delivered')
     customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE)
     code_id = models.ForeignKey(DiscountCode, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.date}ـ{self.total_price}$"
 
 
 class OrderDetail(models.Model):
