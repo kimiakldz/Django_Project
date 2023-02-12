@@ -5,6 +5,12 @@ from product.models import Product
 
 # Create your models here.
 class DiscountCode(models.Model):
+    """Example of docstring on the __init__ method.
+
+            Either form is acceptable, but the two should not be mixed. Choose one
+            convention to document the __init__ method and be consistent with it.
+
+            """
     value = models.DecimalField(max_digits=20, decimal_places=2)
     type = models.TextChoices('DiscountType', 'Price Percent')
     max = models.DecimalField(max_digits=20, decimal_places=2)
@@ -16,6 +22,24 @@ class DiscountCode(models.Model):
 
 
 class Order(models.Model):
+    """Example of docstring on the __init__ method.
+
+            The __init__ method may be documented in either the class level
+            docstring, or as a docstring on the __init__ method itself.
+
+            Either form is acceptable, but the two should not be mixed. Choose one
+            convention to document the __init__ method and be consistent with it.
+
+            Note:
+                Do not include the `self` parameter in the ``Args`` section.
+
+            Args:
+                param1 (str): Description of `param1`.
+                param2 (:obj:`int`, optional): Description of `param2`. Multiple
+                    lines are supported.
+                param3 (:obj:`list` of :obj:`str`): Description of `param3`.
+
+            """
     ORDERED = 'OR'
     INPROGRESS = 'IP'
     SENT = 'SE'
@@ -41,6 +65,12 @@ class Order(models.Model):
 
 
 class OrderDetail(models.Model):
+    """Example of docstring on the __init__ method.
+
+            The __init__ method may be documented in either the class level
+            docstring, or as a docstring on the __init__ method itself.
+
+            """
     order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     Quantity = models.IntegerField()

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'product.apps.ProductConfig',
     'order.apps.OrderConfig',
     'accounts.apps.AccountsConfig',
+    'iranian_cities',
 ]
 
 MIDDLEWARE = [
