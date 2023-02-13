@@ -10,7 +10,8 @@ class User(AbstractUser):
         Stores users information, inherited from django AbstractUser
     """
     phone = models.CharField(max_length=11, null=True, blank=True)
-    username = None
+    first_name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150)
     email = models.EmailField(max_length=255, unique=True)
 
     objects = UserManager()
