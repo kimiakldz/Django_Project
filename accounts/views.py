@@ -7,9 +7,11 @@ from .forms import UserRegistrationForm
 
 class UserRegisterView(View):
     form_class = UserRegistrationForm
+    template_name = 'login.html'
+
     def get(self, request):
         form = self.form_class
-        return render(request, 'login.html', {'form': form})
+        return render(request, self.template_name, {'form': form})
 
     def post(self, request):
         return render(request, 'home.html')
