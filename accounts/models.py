@@ -3,6 +3,7 @@ from django import forms
 from django.contrib.auth.models import AbstractUser
 from .managers import UserManager
 from core import settings
+from iranian_cities.fields import OstanField, ShahrestanField
 
 
 # Create your models here.
@@ -48,8 +49,8 @@ class Address(models.Model):
             Note:
                 Do not include the `self` parameter in the ``Args`` section.
             """
-    province = models.CharField(max_length=50)
-    city = models.CharField(max_length=50)
+    province = OstanField()
+    city = ShahrestanField()
     street = models.CharField(max_length=50)
     alley = models.CharField(max_length=50)
     num = models.CharField(max_length=5, null=True, blank=True)
