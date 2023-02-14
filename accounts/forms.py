@@ -44,3 +44,11 @@ class UserChangeForm(forms.ModelForm):
         fields = (
             'phone', 'email', 'first_name', 'last_name', 'last_login', 'password',
             'is_active', 'is_staff')
+
+
+class UserRegistrationForm(forms.Form):
+    email = forms.EmailField()
+    first_name = forms.CharField(label='Your first name')
+    last_name = forms.CharField(label='Your last name')
+    phone = forms.CharField(max_length=11, label='Your phone number', required=False)
+    password = forms.CharField(widget=forms.PasswordInput)
