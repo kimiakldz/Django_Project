@@ -2,6 +2,7 @@ from django.db import models
 from django import forms
 from django.contrib.auth.models import AbstractUser
 from .managers import UserManager
+from core import settings
 
 
 # Create your models here.
@@ -17,14 +18,16 @@ class User(AbstractUser):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['first_name', 'last_name']
 
     def __str__(self):
         return self.email
 
     def has_perm(self, perm, obj=None):
-        "Does the user have a specific permission?"
-        # Simplest possible answer: Yes, always
+        """
+        Does the user have a specific permission?
+        Simplest possible answer: Yes, always
+        """
         return True
 
     def has_module_perms(self, app_label):
@@ -51,7 +54,7 @@ class Address(models.Model):
     alley = models.CharField(max_length=50)
     num = models.CharField(max_length=5, null=True, blank=True)
     postal_code = models.CharField(max_length=10, null=True, blank=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f"{self.province}/{self.city}"

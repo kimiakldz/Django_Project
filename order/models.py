@@ -1,6 +1,7 @@
 from django.db import models
-from accounts.models import Customer, Address
+from accounts.models import User, Address
 from product.models import Product
+from core import settings
 
 
 # Create your models here.
@@ -57,8 +58,8 @@ class Order(models.Model):
     )
     total_price = models.DecimalField(max_digits=20, decimal_places=2)
     date = models.DateTimeField(auto_now_add=True)
-    customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    code_id = models.ForeignKey(DiscountCode, on_delete=models.CASCADE, null=True, blank=True)
+    customer_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, null=True, blank=True)
+    code_id = models.ForeignKey(DiscountCode, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f"{self.date}ـ{self.total_price}$"
@@ -71,6 +72,6 @@ class OrderDetail(models.Model):
             docstring, or as a docstring on the __init__ method itself.
 
             """
-    order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+    order_id = models.ForeignKey(Order, on_delete=models.DO_NOTHING)
+    product_id = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
     Quantity = models.IntegerField()
