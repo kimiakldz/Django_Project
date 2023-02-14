@@ -6,7 +6,6 @@ from django.contrib.auth.models import Group
 from iranian_cities.admin import IranianCitiesAdmin
 
 
-
 # @admin.register(Address)
 # class AddressAdmin(admin.ModelAdmin):
 #     list_display = ('province', 'city', 'postal_code')
