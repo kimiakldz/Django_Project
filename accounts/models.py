@@ -60,3 +60,12 @@ class Address(models.Model):
 
     def __str__(self):
         return f"{self.province}/{self.city}"
+
+
+class OtpCode(models.Model):
+    email = models.EmailField()
+    code = models.PositiveSmallIntegerField()
+    created = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.code} to {self.email} at {self.created}"
