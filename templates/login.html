@@ -7,8 +7,8 @@
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Raleway:300,600" rel="stylesheet">
 
   <!-- Customized Bootstrap Stylesheet -->
-  <link href="{% static 'css/style.css' %}" rel="stylesheet">
-<meta name="viewport" content="width=device-width, initial-scale=1"><link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'><link rel="stylesheet" href="./style.css">
+  <link href="{% static 'css/login_style.css' %}" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1"><link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'><link rel="stylesheet" href="{% static 'css/login_style.css' %}">
 
 </head>
 <body>
@@ -61,12 +61,20 @@
             <!-- Signup Form -->
             <div class="signup form-peice">
                <form class="signup-form" action="#" method="post">
+                   {% csrf_token %}
+
 
                   <div class="form-group">
-                     <label for="name">Full Name</label>
-                     <input type="text" name="username" id="name" class="name">
+                     <label for="name">First Name</label>
+                     {{ form.first_name }}
                      <span class="error"></span>
                   </div>
+
+                   <div class="form-group">
+                     <label for="name">Last Name</label>
+                     {{ form.last_name }}
+                     <span class="error"></span>
+                   </div>
 
                   <div class="form-group">
                      <label for="email">Email Adderss</label>
@@ -112,7 +120,7 @@
 </div>
 <!-- partial -->
   <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script><script  src="{% static 'js/script.js' %}"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script><script  src="{% static 'js/login_script.js' %}"></script>
 
 </body>
 </html>
