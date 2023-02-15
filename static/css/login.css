@@ -52,7 +52,7 @@ body {
       color: #919aa3; }
   .login-card .login-btn {
     padding: 13px 20px 12px;
-    background-color: #c17070;
+    background-color: #c17a74;
     border-radius: 4px;
     font-size: 17px;
     font-weight: bold;
@@ -62,7 +62,7 @@ body {
     .login-card .login-btn:hover {
       border: 1px solid #c17070;
       background-color: transparent;
-      color: #000; }
+      color: #c17a74; }
   .login-card .forgot-password-link {
     font-size: 14px;
     color: #919aa3;

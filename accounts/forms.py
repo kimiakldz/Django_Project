@@ -51,25 +51,25 @@ class UserChangeForm(forms.ModelForm):
 
 
 class UserRegistrationForm(forms.Form):
-    email = forms.EmailField(widget=forms.TextInput(attrs={
+    email = forms.EmailField(label='', widget=forms.TextInput(attrs={
         'class': 'form-control',
         'placeholder': 'Email address'
     }))
-    first_name = forms.CharField(widget=forms.TextInput(attrs={
+    first_name = forms.CharField(label='', widget=forms.TextInput(attrs={
 
         'class': 'form-control',
         'placeholder': 'First Name'
     }))
-    last_name = forms.CharField(widget=forms.TextInput(attrs={
+    last_name = forms.CharField(label='', widget=forms.TextInput(attrs={
 
         'class': 'form-control',
         'placeholder': 'Last Name'
     }))
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs={
+    password1 = forms.CharField(label='', widget=forms.PasswordInput(attrs={
         'class': 'form-control',
         'placeholder': 'Password'
     }))
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs={
+    password2 = forms.CharField(label='', widget=forms.PasswordInput(attrs={
         'class': 'form-control',
         'placeholder': 'Password Confirm'
     }))
@@ -78,7 +78,7 @@ class UserRegistrationForm(forms.Form):
         email = self.cleaned_data['email']
         user = User.objects.filter(email=email).exists()
         if user:
-            raise ValidationError('this email already exists')
+            raise ValidationError('This email already exists')
         return email
 
     def clean(self):
@@ -92,3 +92,20 @@ class UserRegistrationForm(forms.Form):
 
 # class VerifyCodeForm(forms.Form):
 #     code = forms.IntegerField(max_value=999999, min_value=100000)
+
+class UserLoginForm(forms.Form):
+    email = forms.EmailField(label='', widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Email address'
+    }))
+    password = forms.CharField(label='', widget=forms.PasswordInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Password'
+    }))
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        user = User.objects.filter(email=email).exists()
+        if not user:
+            raise ValidationError('This email does not exists! <a href=\"../password/\">Make a new one</a>')
+        return email
