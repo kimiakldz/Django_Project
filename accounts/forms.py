@@ -91,5 +91,5 @@ class UserRegistrationForm(forms.Form):
         return user
 
 
-class VerifyCodeForm(forms.Form):
-    code = forms.IntegerField(max_value=999999, min_value=100000)
+# class VerifyCodeForm(forms.Form):
+#     code = forms.IntegerField(max_value=999999, min_value=100000)
