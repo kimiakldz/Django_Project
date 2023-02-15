@@ -60,10 +60,8 @@
 
             <!-- Signup Form -->
             <div class="signup form-peice">
-               <form class="signup-form" action="#" method="post">
+               <form class="signup-form" action="{% url 'accounts:user_register' %}" method="post">
                    {% csrf_token %}
-
-
                   <div class="form-group">
                      <label for="name">First Name</label>
                      {{ form.first_name }}
@@ -93,9 +91,9 @@
                      {{ form.password2 }}
                      <span class="error"></span>
                   </div>
+                  <input type="submit" value="Signup Now" id="submit">
 
                   <div class="CTA">
-                     <input type="submit" value="Signup Now" id="submit">
                      <a href="#" class="switch">I have an account</a>
                   </div>
                </form>
@@ -115,7 +113,8 @@
 </div>
 <!-- partial -->
   <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script><script  src="{% static 'js/login_script.js' %}"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+  <script  src="{% static 'js/login_script.js' %}"></script>
 
 </body>
 </html>

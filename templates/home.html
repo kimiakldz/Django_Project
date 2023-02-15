@@ -5,6 +5,13 @@
     <title>Home</title>
 </head>
 <body>
-    <h3>This will be landing Page</h3>
+    <div >
+        <form action="{% url 'accounts:user_register' %}" method="post">
+                   {% csrf_token %}
+                   {{ form.as_p }}
+
+                <input type="submit" value="Signup Now" id="submit">
+        </form>
+    </div><!-- End Signup Form -->
 </body>
 </html>
