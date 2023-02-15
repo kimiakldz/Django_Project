@@ -5,6 +5,15 @@ import random
 # from utils import send_otp_code
 from .models import OtpCode, User
 from django.contrib import messages
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from .tokens import account_activation_token
+from django.core.mail import EmailMessage
 
 
 # Create your views here.
@@ -20,30 +29,50 @@ class UserRegisterView(View):
     def post(self, request):
         form = self.form_class(request.POST)
         if form.is_valid():
-            # random_code = random.randint(100000, 999999)
-            #  send_otp_code(form.cleaned_data['email'], random_code)
-            # OtpCode.objects.create(email=form.cleaned_data['email'], code=random_code)
-            # request.session['user_registration_info'] = {
-            #     'email': form.cleaned_data['email'],
-            #     'first_name': form.cleaned_data['first_name'],
-            #     'last_name': form.cleaned_data['last_name'],
-            #     'password': form.cleaned_data['password1']
-            # }
-            # messages.success(request, 'Verification code has been sent to your email', 'success')
-            cd = form.cleaned_data
-            User.objects.create_user(cd['email'], cd['first_name'], cd['last_name'], cd['password1'])
-            messages.success(request, 'you are registered', 'success')
-            return redirect('products:landing')
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your blog account.'
+            message = render_to_string('acc_active_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            })
+            to_email = form.cleaned_data.get('email')
+            email = EmailMessage(
+                mail_subject, message, to=[to_email]
+            )
+            email.send()
+            messages.success(request, 'Verification code has been sent to your email', 'success')
+            return HttpResponse('Please confirm your email address to complete the registration')
         return render(request, self.template_name, {'form': form})
 
 
-class UserRegisterVerifyCodeView(View):
-    form_class = VerifyCodeForm
-    template_name = 'verify.html'
+# class UserRegisterVerifyCodeView(View):
+#     form_class = VerifyCodeForm
+#     template_name = 'verify.html'
+#
+#     def get(self, request):
+#         form = self.form_class
+#         return render(request, self.template_name, {'form': form})
+#
+#     def post(self, request):
+#         pass
 
-    def get(self, request):
-        form = self.form_class
-        return render(request, self.template_name, {'form': form})
 
-    def post(self, request):
-        pass
+def activate(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        # return redirect('home')
+        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+    else:
+        return HttpResponse('Activation link is invalid!')

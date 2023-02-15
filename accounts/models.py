@@ -73,20 +73,20 @@ class OtpCode(models.Model):
         return f"{self.code} to {self.email} at {self.created}"
 
 
-class Profile(models.Model):
-    """
-    Create a model named Profile for determinant if the e-mail is confirmed or not.
-    """
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    email_confirmed = models.BooleanField(default=False)
-
-
-@receiver(post_save, sender=User)
-def update_user_profile(sender, instance, created, **kwargs):
-    """
-    Add a Django signal. A new entry is added within the User model,
-    the signal is going to be trigger and add details in Profile model with default django email confirm as false.
-    """
-    if created:
-        Profile.objects.create(user=instance)
-        instance.profile.save()
+# class Profile(models.Model):
+#     """
+#     Create a model named Profile for determinant if the e-mail is confirmed or not.
+#     """
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     email_confirmed = models.BooleanField(default=False)
+#
+#
+# @receiver(post_save, sender=User)
+# def update_user_profile(sender, instance, created, **kwargs):
+#     """
+#     Add a Django signal. A new entry is added within the User model,
+#     the signal is going to be trigger and add details in Profile model with default django email confirm as false.
+#     """
+#     if created:
+#         Profile.objects.create(user=instance)
+#         instance.profile.save()
