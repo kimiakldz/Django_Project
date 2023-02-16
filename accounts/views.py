@@ -28,7 +28,7 @@ class UserRegisterView(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            User.objects.create_user(cd['first_name'], cd['last_name'], cd['email'], cd['password1'])
+            User.objects.create_user(cd['email'], cd['first_name'], cd['last_name'], cd['password1'])
             messages.success(request, 'Registered successfully', 'success')
             return redirect('landing:landing')
         return render(request, self.template_name, {'form': form})
@@ -43,26 +43,7 @@ class UserLoginView(View):
         return render(request, self.template_name, {'form': form})
 
     def post(self, request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            user = authenticate(request, email=cd['email'], password=cd['password'])
-            if user is not None:
-                login(request, user)
-                messages.success(request, 'Logged in successfully', 'success')
-                return redirect('landing:landing')
-            messages.error(request, 'Password is incorrect', 'warning')
-        return render(request, self.template_name, {'form': form})
-
-
-class UserLoginView(View):
-    form_class = UserLoginForm
-
-    def get(self, request):
-        form = self.form_class
-        return render(request, self.template_name, {'form': form})
-
-    def post(self, request):
+        print('OK post')
         form = self.form_class(request.POST)
         if form.is_valid():
             cd = form.cleaned_data

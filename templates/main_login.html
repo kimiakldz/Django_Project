@@ -42,11 +42,11 @@
                             </a>
                         </div>
                         <p class="login-card-description">Welcome back</p>
-                        <form action="{% url 'accounts:user_register' %}" method="post" novalidate>
+                        <form action="{% url 'accounts:user_login' %}" method="post" novalidate>
                             {% csrf_token %}
                             {{ form.as_p }}
                             <input name="login" id="login" class="btn btn-block login-card login-btn mb-4" type="submit"
-                                   value="Register">
+                                   value="Sign in">
                         </form>
                         <p class="login-card-footer-text">You are new? <a href="{% url 'accounts:user_register' %}"
                                                                           class="text-reset"

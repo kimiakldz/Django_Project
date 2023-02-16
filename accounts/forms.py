@@ -102,10 +102,3 @@ class UserLoginForm(forms.Form):
         'class': 'form-control',
         'placeholder': 'Password'
     }))
-
-    def clean_email(self):
-        email = self.cleaned_data['email']
-        user = User.objects.filter(email=email).exists()
-        if not user:
-            raise ValidationError('This email does not exists! <a href=\"../password/\">Make a new one</a>')
-        return email
