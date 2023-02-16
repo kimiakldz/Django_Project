@@ -100,5 +100,5 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.name}: {self.price}$"
 
-    # def get_absolute_url(self):
-    #     return reverse('home:category_filter', args=[self.slug, ])
+    def get_absolute_url(self):
+        return reverse('landing:product_detail', args=[self.slug, ])
