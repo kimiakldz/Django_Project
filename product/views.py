@@ -8,7 +8,7 @@ from .models import Product, Category
 class LandingView(View):
     def get(self, request):
         categories = Category.objects.all()
-        return render(request, 'index.html', {'categories': categories})
+        return render(request, 'home.html', {'categories': categories})
 
     def post(self, request):
         return render(request, 'home.html')
