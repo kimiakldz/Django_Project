@@ -1,14 +1,14 @@
 from django.contrib import admin
-from .models import User, Address, OtpCode
+from .models import User, Address
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import Group
 from iranian_cities.admin import IranianCitiesAdmin
 
 
-@admin.register(OtpCode)
-class OtpCodeAdmin(admin.ModelAdmin):
-    list_display = ('code', 'created')
+# @admin.register(OtpCode)
+# class OtpCodeAdmin(admin.ModelAdmin):
+#     list_display = ('code', 'created')
 
 @admin.register(Address)
 class AddressAdmin(IranianCitiesAdmin):

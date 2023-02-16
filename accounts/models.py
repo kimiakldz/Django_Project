@@ -42,17 +42,13 @@ class User(AbstractUser):
 
 
 class Address(models.Model):
-    """Example of docstring on the __init__ method.
+    """
+        Stores users addresses separately.
+        In case that user may have several addresses.
 
-            The __init__ method may be documented in either the class level
-            docstring, or as a docstring on the __init__ method itself.
-
-            Either form is acceptable, but the two should not be mixed. Choose one
-            convention to document the __init__ method and be consistent with it.
-
-            Note:
-                Do not include the `self` parameter in the ``Args`` section.
-            """
+        Using Iranian cities database to choose province and cities of Iran
+        as a dropdown Menu.
+    """
     province = OstanField()
     city = ShahrestanField()
     street = models.CharField(max_length=50)
@@ -65,14 +61,16 @@ class Address(models.Model):
         return f"{self.province}/{self.city}"
 
 
-class OtpCode(models.Model):
-    email = models.EmailField()
-    code = models.PositiveSmallIntegerField()
-    created = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"{self.code} to {self.email} at {self.created}"
-
+# class OtpCode(models.Model):
+#     """
+#         Stores a six digit verification code for each email register confirmation.
+#     """
+#     email = models.EmailField()
+#     code = models.PositiveSmallIntegerField()
+#     created = models.DateTimeField(auto_now=True)
+#
+#     def __str__(self):
+#         return f"{self.code} to {self.email} at {self.created}"
 
 # class Profile(models.Model):
 #     """

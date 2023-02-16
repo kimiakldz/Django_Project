@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from .forms import UserRegistrationForm, UserCreationForm, UserLoginForm
-from .models import OtpCode, User
+from .models import User
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
