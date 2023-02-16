@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from ckeditor.fields import RichTextField
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 # Create your models here.
@@ -14,9 +15,12 @@ class Category(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=250, unique=True)
     parent_id = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+    image = models.ImageField(upload_to="product/", null=True, blank=True)
 
     class Meta:
         ordering = ('name',)
+        verbose_name = 'category'
+        verbose_name_plural = 'categories'
 
     def __str__(self):
         return f"{self.name}"
@@ -82,8 +86,8 @@ class Product(models.Model):
     name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=20, decimal_places=2)
     description = models.TextField(null=True, blank=True)
-    image = models.ImageField(upload_to="product/", null=True, blank=True)
-    Stock = models.IntegerField()
+    image = models.ImageField(upload_to="product/%Y/%m/", null=True, blank=True)
+    Stock = models.IntegerField(validators=[MinValueValidator(0)])
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     discount_id = models.ForeignKey(Discount, on_delete=models.SET_NULL, null=True, blank=True)
     slug = models.SlugField(max_length=250, unique=True)

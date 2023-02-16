@@ -82,6 +82,7 @@ DATABASES = {
         'PASSWORD': '9137361339',
         'HOST': '127.0.0.1',
         'PORT': '5432',
+        'DISABLE_SERVER_SIDE_CURSORS': True,
     }
 }
 
@@ -124,6 +125,9 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -138,3 +142,4 @@ EMAIL_HOST_USER = 'kkolahdooz2020@gmail.com'
 EMAIL_HOST_PASSWORD = 'worvrkzxxdfdpoli'
 EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = 'Regards, Ecommerce Django Website'
+

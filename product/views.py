@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from django.views import View
+from .models import Product, Category
 
 
 # Create your views here.
 
 class LandingView(View):
     def get(self, request):
-        return render(request, 'index.html')
+        categories = Category.objects.all()
+        return render(request, 'index.html', {'categories': categories})
 
     def post(self, request):
         return render(request, 'home.html')
