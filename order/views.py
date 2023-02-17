@@ -10,12 +10,6 @@ from product.models import Product
 # Create your views here.
 
 
-
-
-
-
-
-
 class CartView(View):
     def get(self, request):
         cart = str(Cart(request))
