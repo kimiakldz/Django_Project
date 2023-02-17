@@ -1,3 +1,5 @@
+from product.models import Product
+
 CART_SESSION_ID = 'cart'
 
 
@@ -8,6 +10,7 @@ class Cart:
         if not cart:
             cart = self.session[CART_SESSION_ID] = {}
         self.cart = cart
+        print(cart)
 
     def __iter__(self):
         product_ids = self.cart.keys()

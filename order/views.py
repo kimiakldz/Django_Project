@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 
 from order.forms import CartAddForm
+from product.cart import Cart
 from product.models import Product
 
 
@@ -17,7 +18,8 @@ from product.models import Product
 
 class CartView(View):
     def get(self, request):
-        cart = Cart(request)
+        cart = str(Cart(request))
+        print(cart)
         return render(request, 'cart.html', {'cart': cart})
 
 

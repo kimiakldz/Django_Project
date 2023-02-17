@@ -29,6 +29,7 @@ class ShopView(View):
         if category_slug:
             category = Category.objects.get(slug=category_slug)
             subcategories = categories.filter(parent_id=category)
+            products = products.filter(category_id=category)
             return render(request, self.template_name, {'categories': subcategories, 'products': products})
         return render(request, self.template_name, {'products': products})
 
