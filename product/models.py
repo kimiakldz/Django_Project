@@ -14,7 +14,8 @@ class Category(models.Model):
     """
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=250, unique=True)
-    parent_id = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+    parent_id = models.ForeignKey('self', on_delete=models.CASCADE, related_name='subcategory', null=True, blank=True)
+    is_sub = models.BooleanField(default=False)
     image = models.ImageField(upload_to="product/", null=True, blank=True)
 
     class Meta:
@@ -24,6 +25,9 @@ class Category(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+    def get_absolute_url(self):
+        return reverse('landing:category_filter', args=[self.slug, ])
 
 
 class Discount(models.Model):
@@ -88,7 +92,7 @@ class Product(models.Model):
     description = models.TextField(null=True, blank=True)
     image = models.ImageField(upload_to="product/%Y/%m/", null=True, blank=True)
     Stock = models.IntegerField(validators=[MinValueValidator(0)])
-    category_id = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
+    category_id = models.ManyToManyField(Category, related_name='products')
     discount_id = models.ForeignKey(Discount, on_delete=models.SET_NULL, null=True, blank=True)
     slug = models.SlugField(max_length=250, unique=True)
     created = models.DateTimeField(auto_now_add=True)
