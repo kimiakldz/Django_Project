@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import View
 from .models import Product, Category
+from order.forms import CartAddForm
 
 
 # Create your views here.
@@ -37,10 +38,12 @@ class ShopView(View):
 
 class ProductDetailView(View):
     template_name = 'detail.html'
+    form_class = CartAddForm
 
     def get(self, request, product_slug):
+        form = self.form_class
         product = get_object_or_404(Product, slug=product_slug)
-        return render(request, self.template_name, {'product': product})
+        return render(request, self.template_name, {'product': product, 'form': form})
 
     def post(self, request):
         return render(request, self.template_name)

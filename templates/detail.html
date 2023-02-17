@@ -92,19 +92,23 @@
                 </div>
                 <div class="d-flex align-items-center mb-4 pt-2">
                     <div class="input-group quantity mr-3" style="width: 130px;">
-                        <div class="input-group-btn">
-                            <button class="btn btn-primary btn-minus" >
-                            <i class="fa fa-minus"></i>
-                            </button>
-                        </div>
-                        <input type="text" class="form-control bg-secondary text-center" value="1">
-                        <div class="input-group-btn">
-                            <button class="btn btn-primary btn-plus">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                        </div>
+{#                        <div class="input-group-btn">#}
+{#                            <button class="btn btn-primary btn-minus" >#}
+{#                            <i class="fa fa-minus"></i>#}
+{#                            </button>#}
+{#                        </div>#}
+                        <form action="{% url 'order:cart_add' product.id %}" method="post">
+                            {% csrf_token %}
+                            {{ form }}
+                            <input type='submit' class="btn btn-primary px-3" value="Add To Cart">
+                        </form>
+{#                        <div class="input-group-btn">#}
+{#                            <button class="btn btn-primary btn-plus">#}
+{#                                <i class="fa fa-plus"></i>#}
+{#                            </button>#}
+{#                        </div>#}
                     </div>
-                    <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
+
                 </div>
                 <div class="d-flex pt-2">
                     <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
@@ -155,7 +159,7 @@
                                     <li class="list-group-item px-0">
                                         Takimata ea clita labore amet ipsum erat justo voluptua. Nonumy.
                                     </li>
-                                  </ul> 
+                                  </ul>
                             </div>
                             <div class="col-md-6">
                                 <ul class="list-group list-group-flush">
@@ -171,7 +175,7 @@
                                     <li class="list-group-item px-0">
                                         Takimata ea clita labore amet ipsum erat justo voluptua. Nonumy.
                                     </li>
-                                  </ul> 
+                                  </ul>
                             </div>
                         </div>
                     </div>
