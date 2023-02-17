@@ -10,6 +10,7 @@ class LandingView(View):
 
     def get(self, request):
         main_categories = Category.objects.filter(is_sub=False)
+        categories = Category.objects.all()
         products = Product.objects.all()
         return render(request, self.template_name,
                       {'categories': main_categories, 'products': products})
