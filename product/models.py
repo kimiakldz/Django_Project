@@ -93,7 +93,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to="product/%Y/%m/", null=True, blank=True)
     Stock = models.IntegerField(validators=[MinValueValidator(0)])
     category_id = models.ManyToManyField(Category, related_name='products')
-    discount_id = models.ForeignKey(Discount, on_delete=models.SET_NULL, null=True, blank=True)
+    discount_id = models.ForeignKey(Discount, on_delete=models.SET_DEFAULT, default=None)
     slug = models.SlugField(max_length=250, unique=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
