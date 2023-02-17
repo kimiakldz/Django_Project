@@ -8,15 +8,9 @@ from .models import Product, Category
 class LandingView(View):
     template_name = 'home.html'
 
-    def get(self, request, category_slug=None):
+    def get(self, request):
         main_categories = Category.objects.filter(is_sub=False)
-        categories = Category.objects.all()
         products = Product.objects.all()
-        if category_slug:
-            category = Category.objects.get(slug=category_slug)
-            subcategories = categories.filter(parent_id=category)
-            return render(request, self.template_name,
-                          {'categories': subcategories, 'products': products})
         return render(request, self.template_name,
                       {'categories': main_categories, 'products': products})
 
@@ -24,16 +18,16 @@ class LandingView(View):
         return render(request, self.template_name)
 
 
-class SubcatView(View):
-    template_name = 'home.html'
-    pass
-
-
 class ShopView(View):
     template_name = 'shop.html'
 
-    def get(self, request):
+    def get(self, request, category_slug=None):
         products = Product.objects.all()
+        categories = Category.objects.all()
+        if category_slug:
+            category = Category.objects.get(slug=category_slug)
+            subcategories = categories.filter(parent_id=category)
+            return render(request, self.template_name, {'categories': subcategories, 'products': products})
         return render(request, self.template_name, {'products': products})
 
     def post(self, request):
