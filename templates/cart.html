@@ -19,7 +19,7 @@
                     <tbody class="align-middle">
                     {% for c in cart %}
                         <tr>
-                            <td class="align-middle"><img src="img/product-1.jpg" alt="" style="width: 50px;"> {{ c.product}}
+                            <td class="align-middle"><img src="{{ c.image.url}}" alt="" style="width: 50px;"> {{ c.product}}
                             </td>
                             <td class="align-middle">{{ c.price}}</td>
                             <td class="align-middle">

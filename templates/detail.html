@@ -91,7 +91,7 @@
                     </form>
                 </div>
                 <div class="d-flex align-items-center mb-4 pt-2">
-                    <div class="input-group quantity mr-3" style="width: 130px;">
+                    <div class="row input-group quantity mr-3" style="width: 150px;">
 {#                        <div class="input-group-btn">#}
 {#                            <button class="btn btn-primary btn-minus" >#}
 {#                            <i class="fa fa-minus"></i>#}
@@ -99,8 +99,8 @@
 {#                        </div>#}
                         <form action="{% url 'order:cart_add' product.id %}" method="post">
                             {% csrf_token %}
-                            {{ form }}
-                            <input type='submit' class="btn btn-primary px-3" value="Add To Cart">
+                            {{ form}}<br>
+                            <input class="col btn btn-primary px-3" type="submit" value="Add To Cart">
                         </form>
 {#                        <div class="input-group-btn">#}
 {#                            <button class="btn btn-primary btn-plus">#}
