@@ -55,7 +55,7 @@ class Address(models.Model):
     alley = models.CharField(max_length=50)
     num = models.CharField(max_length=5, null=True, blank=True)
     postal_code = models.CharField(max_length=10, null=True, blank=True)
-    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.province}/{self.city}"

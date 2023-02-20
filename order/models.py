@@ -44,7 +44,7 @@ class Order(models.Model):
     total_price = models.DecimalField(max_digits=20, decimal_places=2)
     date = models.DateTimeField(auto_now_add=True)
     customer_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, null=True, blank=True)
-    code_id = models.ForeignKey(DiscountCode, on_delete=models.SET_NULL, null=True, blank=True)
+    code_id = models.ForeignKey(DiscountCode, on_delete=models.SET_DEFAULT, default=None)
 
     def __str__(self):
         return f"{self.date}ـ{self.total_price}$"
