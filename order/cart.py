@@ -24,7 +24,7 @@ class Cart:
             print(cart)
 
         for item in cart.values():
-            item['total_price'] = float(item['price']) * item['quantity']
+            item['total_price'] = round(float(item['price']) * item['quantity'], 2)
             print(type(item['total_price']))
             yield item
 
@@ -40,4 +40,6 @@ class Cart:
     def save(self):
         self.session.modified = True
 
-
+    def get_total_price(self):
+        subtotal = sum(float(item['price']) * item['quantity'] for item in self.cart.values())
+        return subtotal
