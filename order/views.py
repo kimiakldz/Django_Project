@@ -28,3 +28,13 @@ class CartAddView(PermissionRequiredMixin, View):
         if form.is_valid():
             cart.add(product, form.cleaned_data['quantity'])
         return redirect('order:cart')
+
+
+class CartRemoveView(View):
+    def get(self, request, product_id):
+        cart = Cart(request)
+        product = get_object_or_404(Product, id=product_id)
+        print(product)
+        print(type(product))
+        cart.remove(product)
+        return redirect('order:cart')

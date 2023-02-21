@@ -64,6 +64,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'product.context_processors.cart',
+                'product.context_processors.menu',
             ],
         },
     },
@@ -142,4 +144,3 @@ EMAIL_HOST_USER = 'kkolahdooz2020@gmail.com'
 EMAIL_HOST_PASSWORD = 'worvrkzxxdfdpoli'
 EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = 'Regards, Ecommerce Django Website'
-

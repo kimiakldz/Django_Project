@@ -19,7 +19,7 @@
                     <tbody class="align-middle">
                     {% for c in cart %}
                         <tr>
-                            <td class="align-middle"><img src="{{ c.image.url }}" alt=""
+                            <td class="align-middle"><img src="{{ c.product.image.url }}" alt=""
                                                           style="width: 50px;"> {{ c.product }}
                             </td>
                             <td class="align-middle">${{ c.price }}</td>
@@ -41,7 +41,7 @@
                             </td>
                             <td class="align-middle">${{ c.total_price }}</td>
                             <td class="align-middle">
-                                <button class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button>
+                                <button class="btn btn-sm btn-primary"><a href="{% url 'order:cart_remove' c.product.id %}" style="color: #0f0f0f"><i class="fa fa-times" ></i></a></button>
                             </td>
                         </tr>
                     {% endfor %}

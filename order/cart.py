@@ -14,32 +14,42 @@ class Cart:
 
     def __iter__(self):
         product_ids = self.cart.keys()
-        print(product_ids)
+        # print(product_ids)
         products = Product.objects.filter(id__in=product_ids)
         cart = self.cart.copy()
         for product in products:
-            cart[str(product.id)]['product'] = product.name
-            cart[str(product.id)]['image'] = product.image
-            print(product.image)
-            print(cart)
+            cart[str(product.id)]['product'] = product
+            # print(product.image)
+            # print(cart)
 
         for item in cart.values():
             item['total_price'] = round(float(item['price']) * item['quantity'], 2)
-            print(type(item['total_price']))
+            # print(type(item['total_price']))
             yield item
 
+    def __len__(self):
+        cart_len = sum(item['quantity'] for item in self.cart.values())
+        return cart_len
+
     def add(self, product, quantity):
-        print(quantity)
+        # print(quantity)
         product_id = str(product.id)
-        print(product_id)
+        # print(product_id)
         if product_id not in self.cart:
             self.cart[product_id] = {'quantity': 0, 'price': str(product.price)}
         self.cart[product_id]['quantity'] += quantity
         self.save()
+
+    def remove(self, product):
+        product_id = str(product.id)
+        print(product_id)
+        if product_id in self.cart:
+            del self.cart[product_id]
+            self.save()
 
     def save(self):
         self.session.modified = True
 
     def get_total_price(self):
         subtotal = sum(float(item['price']) * item['quantity'] for item in self.cart.values())
-        return subtotal
+        return round(subtotal, 2)
