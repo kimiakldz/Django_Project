@@ -41,11 +41,11 @@ class Order(models.Model):
         choices=Order_Status,
         default=ORDERED,
     )
-    total_price = models.DecimalField(max_digits=20, decimal_places=2)
+    total_price = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
     created = models.DateTimeField(auto_now_add=True)
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, null=True, blank=True,
                                 related_name='orders')
-    code_id = models.ForeignKey(DiscountCode, on_delete=models.SET_DEFAULT, default=None)
+    code_id = models.ForeignKey(DiscountCode, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True,)
 
     def get_subtotal_price(self):
         return sum(item.get_cost() for item in self.items.all())
@@ -54,7 +54,7 @@ class Order(models.Model):
         ordering = ('-created')
 
     def __str__(self):
-        return f"{self.user_id}$ ـ{self.total_price}"
+        return f"{self.user_id} - ${self.total_price}"
 
 
 class OrderDetail(models.Model):
@@ -63,7 +63,7 @@ class OrderDetail(models.Model):
     """
     order_id = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product_id = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
-    price = models.DecimalField(max_digits=20, decimal_places=2)
+    price = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
     quantity = models.IntegerField(default=1)
 
     def __str__(self):
