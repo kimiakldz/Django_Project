@@ -42,21 +42,32 @@ class Order(models.Model):
         default=ORDERED,
     )
     total_price = models.DecimalField(max_digits=20, decimal_places=2)
-    date = models.DateTimeField(auto_now_add=True)
-    customer_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, null=True, blank=True,
+                                related_name='orders')
     code_id = models.ForeignKey(DiscountCode, on_delete=models.SET_DEFAULT, default=None)
 
+    def get_subtotal_price(self):
+        return sum(item.get_cost() for item in self.items.all())
+
+    class Mete:
+        ordering = ('-created')
+
     def __str__(self):
-        return f"{self.date}ـ{self.total_price}$"
+        return f"{self.user_id}$ ـ{self.total_price}"
 
 
 class OrderDetail(models.Model):
-    """Example of docstring on the __init__ method.
-
-            The __init__ method may be documented in either the class level
-            docstring, or as a docstring on the __init__ method itself.
-
-            """
-    order_id = models.ForeignKey(Order, on_delete=models.DO_NOTHING)
+    """
+        Stores details of all items in each order from shopping cart.
+    """
+    order_id = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product_id = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
-    Quantity = models.IntegerField()
+    price = models.DecimalField(max_digits=20, decimal_places=2)
+    quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.order_id}: {self.id}"
+
+    def get_cost(self):
+        return self.price * self.quantity
