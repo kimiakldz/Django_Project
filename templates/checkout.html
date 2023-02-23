@@ -127,13 +127,13 @@
                     </div>
                     <div class="card-body">
                         <h5 class="font-weight-medium mb-3">Products</h5>
-{#                        {% for item in order.items %}#}
-{#                            <div class="d-flex justify-content-between">#}
-{#                                <p>{{ item.name }}</p>#}
-{#                                <p>{{ item.price }}</p>#}
-{#                            </div>#}
-{##}
-{#                        {% endfor %}#}
+                        {% for item in order.items.all %}
+                            <div class="d-flex justify-content-between">
+                                <p>{{ item.product_id.name }}</p>
+                                <p>{{ item.price }}</p>
+                            </div>
+
+                        {% endfor %}
 
 
                         <hr class="mt-0">

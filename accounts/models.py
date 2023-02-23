@@ -26,7 +26,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
     def __str__(self):
-        return self.email
+        return f"{self.__dict__}"
 
     def has_perm(self, perm, obj=None):
         """
@@ -58,7 +58,7 @@ class Address(models.Model):
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.province}/{self.city}"
+        return f"{self.province}-{self.city}-{self.street}-{self.alley}"
 
 
 # class OtpCode(models.Model):
