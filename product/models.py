@@ -27,6 +27,9 @@ class Size(models.Model):
         blank=True,
     )
 
+    def __str__(self):
+        return self.size
+
 
 class Color(models.Model):
     BLACK = 'BK'
@@ -57,7 +60,7 @@ class Category(models.Model):
     """
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=250, unique=True)
-    parent_id = models.ForeignKey('self', on_delete=models.CASCADE, related_name='subcategory', null=True, blank=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name='subcategory', null=True, blank=True)
     is_sub = models.BooleanField(default=False)
     image = models.ImageField(upload_to="product/", null=True, blank=True)
 
@@ -79,7 +82,7 @@ class Discount(models.Model):
             Each discount may be set for several products.
     """
     value = models.DecimalField(max_digits=20, decimal_places=2)
-    type = models.CharField(max_length=10, choices=(('D', 'Percent'), ('M', 'Money')), default='M')
+    type = models.CharField(max_length=10, choices=(('P', 'Percent'), ('M', 'Money')), default='M')
     max = models.DecimalField(max_digits=20, decimal_places=2)
 
     def __str__(self):
@@ -97,8 +100,8 @@ class Product(models.Model):
     description = models.TextField(null=True, blank=True)
     image = models.ImageField(upload_to="product/%Y/%m/", null=True, blank=True)
     Stock = models.IntegerField(validators=[MinValueValidator(0)])
-    category_id = models.ManyToManyField(Category, related_name='products')
-    discount_id = models.ForeignKey(Discount, on_delete=models.SET_DEFAULT, default=None)
+    category = models.ManyToManyField(Category, related_name='products')
+    discount = models.ForeignKey(Discount, on_delete=models.SET_DEFAULT, default=None)
     slug = models.SlugField(max_length=250, unique=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

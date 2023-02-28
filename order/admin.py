@@ -7,11 +7,11 @@ admin.site.register(DiscountCode)
 
 class OrderItemInLine(admin.TabularInline):
     model = OrderDetail
-    raw_id_fields = ('product_id',)
+    raw_id_fields = ('product',)
 
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'created', 'total_price', 'user_id')
-    list_filter = ('user_id', 'code_id')
+    list_display = ('id', 'created', 'total_price', 'user')
+    list_filter = ('user', 'discount_code')
     inlines = (OrderItemInLine, )

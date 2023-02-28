@@ -9,5 +9,5 @@ admin.site.register(Color)
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-	raw_id_fields = ('category_id',)
-	search_fields = ('category_id',)
+	raw_id_fields = ('category',)
+	search_fields = ('category',)

@@ -23,7 +23,7 @@ class CartAddView(View):
 
     def post(self, request, product_id):
         cart = Cart(request)
-        product = get_object_or_404(Product, id=product_id)
+        product = get_object_or_404(Product, id=product)
         form = self.form_class(request.POST)
         if form.is_valid():
             cart.add(product, form.cleaned_data['quantity'])
@@ -33,7 +33,7 @@ class CartAddView(View):
 class CartRemoveView(View):
     def get(self, request, product_id):
         cart = Cart(request)
-        product = get_object_or_404(Product, id=product_id)
+        product = get_object_or_404(Product, id=product)
         print(product)
         print(type(product))
         cart.remove(product)
@@ -53,6 +53,6 @@ class OrderCreateView(LoginRequiredMixin, View):
 
 class OrderDetailView(LoginRequiredMixin, View):
     def get(self, request, order_id):
-        order = get_object_or_404(Order, id=order_id)
+        order = get_object_or_404(Order, id=order)
         print(order)
         return render(request, 'checkout.html', {'order': order})

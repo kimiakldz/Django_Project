@@ -12,14 +12,18 @@ class DiscountCode(models.Model):
             convention to document the __init__ method and be consistent with it.
 
             """
-    value = models.DecimalField(max_digits=20, decimal_places=2)
-    type = models.TextChoices('DiscountType', 'Price Percent')
+    code = models.CharField(max_length=10, unique=True, default='code')
+    value = models.IntegerField()
+    type = models.CharField(max_length=10, choices=(('P', 'Percent'), ('M', 'Money')), default='M')
     max = models.DecimalField(max_digits=20, decimal_places=2)
-    expire_date = models.DateField(null=True, blank=True)
+    valid_from = models.DateTimeField(null=True, blank=True)
+    valid_to = models.DateTimeField(null=True, blank=True)
     one_time = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.type}: {self.value}"
+        return f"{self.type}: {self.code}"
+
 
 
 class Order(models.Model):
@@ -43,9 +47,9 @@ class Order(models.Model):
     )
     total_price = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
     created = models.DateTimeField(auto_now_add=True)
-    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, null=True, blank=True,
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, null=True, blank=True,
                                 related_name='orders')
-    code_id = models.ForeignKey(DiscountCode, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True,)
+    discount_code = models.ForeignKey(DiscountCode, on_delete=models.DO_NOTHING, default=None, null=True, blank=True,)
 
     def get_subtotal_price(self):
         return sum(item.get_cost() for item in self.items.all())
@@ -61,8 +65,8 @@ class OrderDetail(models.Model):
     """
         Stores details of all items in each order from shopping cart.
     """
-    order_id = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
-    product_id = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
     price = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
     quantity = models.IntegerField(default=1)
 
