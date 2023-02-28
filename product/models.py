@@ -6,6 +6,49 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
 
+class Size(models.Model):
+    XSMALL = 'XS'
+    SMALL = 'S '
+    MEDIUM = 'M '
+    LARGE = 'L '
+    XLARGE = 'XL'
+
+    Size_Choices = [
+        (XSMALL, 'Xsmall'),
+        (SMALL, 'Small'),
+        (MEDIUM, 'Medium'),
+        (LARGE, 'Large'),
+        (XLARGE, 'Xlarge'),
+    ]
+    size = models.CharField(
+        max_length=2,
+        choices=Size_Choices,
+        null=True,
+        blank=True,
+    )
+
+
+class Color(models.Model):
+    BLACK = 'BK'
+    WHITE = 'WT'
+    RED = 'RD'
+    BLUE = 'BU'
+    GREEN = 'GR'
+
+    Color_Choices = [
+        (BLACK, 'Black'),
+        (WHITE, 'White'),
+        (RED, 'Red'),
+        (BLUE, 'Blue'),
+        (GREEN, 'Green'),
+    ]
+    color = models.CharField(
+        max_length=2,
+        choices=Color_Choices,
+        null=True,
+        blank=True,
+    )
+
 
 class Category(models.Model):
     """
@@ -36,7 +79,7 @@ class Discount(models.Model):
             Each discount may be set for several products.
     """
     value = models.DecimalField(max_digits=20, decimal_places=2)
-    type = models.TextChoices('DiscountType', 'Price Percent')
+    type = models.CharField(max_length=10, choices=(('D', 'Percent'), ('M', 'Money')), default='M')
     max = models.DecimalField(max_digits=20, decimal_places=2)
 
     def __str__(self):
@@ -48,45 +91,7 @@ class Product(models.Model):
             Stores details of products.
             Fields are based on our online clothes shop.
     """
-    XSMALL = 'XS'
-    SMALL = 'S '
-    MEDIUM = 'M '
-    LARGE = 'L '
-    XLARGE = 'XL'
 
-    Size_Choices = [
-        (XSMALL, 'Xsmall'),
-        (SMALL, 'Small'),
-        (MEDIUM, 'Medium'),
-        (LARGE, 'Large'),
-        (XLARGE, 'Xlarge'),
-    ]
-    size = models.CharField(
-        max_length=2,
-        choices=Size_Choices,
-        null=True,
-        blank=True,
-    )
-
-    BLACK = 'BK'
-    WHITE = 'WT'
-    RED = 'RD'
-    BLUE = 'BU'
-    GREEN = 'GR'
-
-    Color_Choices = [
-        (BLACK, 'Black'),
-        (WHITE, 'White'),
-        (RED, 'Red'),
-        (BLUE, 'Blue'),
-        (GREEN, 'Green'),
-    ]
-    color = models.CharField(
-        max_length=2,
-        choices=Color_Choices,
-        null=True,
-        blank=True,
-    )
     name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=20, decimal_places=2)
     description = models.TextField(null=True, blank=True)
@@ -97,6 +102,8 @@ class Product(models.Model):
     slug = models.SlugField(max_length=250, unique=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    sizes = models.ManyToManyField(Size, null=True, blank=True)
+    colors = models.ManyToManyField(Color, null=True, blank=True)
 
     class Meta:
         ordering = ('name',)
@@ -106,5 +113,3 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('landing:product_detail', args=[self.slug, ])
-
-

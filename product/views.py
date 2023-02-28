@@ -60,6 +60,7 @@ class ProductDetailView(View):
     def get(self, request, product_slug):
         form = self.form_class
         product = get_object_or_404(Product, slug=product_slug)
+        print('hi', product.sizes.all())
         return render(request, self.template_name, {'product': product, 'form': form})
 
     def post(self, request):
