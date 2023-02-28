@@ -1,17 +1,20 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 
-from .forms import CartAddForm
+from .forms import CartAddForm, DiscountCodeForm
 from .cart import Cart
 from product.models import Product
 from .models import Order, OrderDetail, DiscountCode
+import datetime
 
 
 # Create your views here.
 
 
 class CartView(View):
+
     def get(self, request):
         cart = Cart(request)
         # print(cart)
@@ -23,7 +26,7 @@ class CartAddView(View):
 
     def post(self, request, product_id):
         cart = Cart(request)
-        product = get_object_or_404(Product, id=product)
+        product = get_object_or_404(Product, id=product_id)
         form = self.form_class(request.POST)
         if form.is_valid():
             cart.add(product, form.cleaned_data['quantity'])
@@ -33,7 +36,7 @@ class CartAddView(View):
 class CartRemoveView(View):
     def get(self, request, product_id):
         cart = Cart(request)
-        product = get_object_or_404(Product, id=product)
+        product = get_object_or_404(Product, id=product_id)
         print(product)
         print(type(product))
         cart.remove(product)
@@ -43,16 +46,38 @@ class CartRemoveView(View):
 class OrderCreateView(LoginRequiredMixin, View):
     def get(self, request):
         cart = Cart(request)
-        order = Order.objects.create(user_id=request.user)
+        order = Order.objects.create(user=request.user)
         for item in cart:
-            OrderDetail.objects.create(order_id=order, product_id=item['product'], price=item['price'],
+            OrderDetail.objects.create(order=order, product=item['product'], price=item['price'],
                                        quantity=item['quantity'])
             cart.clear()
             return redirect('order:Order_detail', order.id)
 
 
 class OrderDetailView(LoginRequiredMixin, View):
+    form_class = DiscountCodeForm
+
     def get(self, request, order_id):
-        order = get_object_or_404(Order, id=order)
+        order = get_object_or_404(Order, id=order_id)
         print(order)
-        return render(request, 'checkout.html', {'order': order})
+        return render(request, 'checkout.html', {'order': order, 'form': self.form_class})
+
+
+class CodeApplyView(LoginRequiredMixin, View):
+    form_class = DiscountCodeForm
+
+    def post(self, request, order_id):
+        now = datetime.datetime.now()
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            code = form.cleaned_data['code']
+            try:
+                discount = DiscountCode.objects.get(code__exact=code, valid_from__lte=now, valid_to__gte=now,
+                                                    is_active=True)
+            except DiscountCode.DoesNotExist:
+                messages.error(request, 'This code is not valid!', 'danger')
+                return redirect('order:Order_detail', order_id)
+            order = Order.objects.get(id=order_id)
+            order.discount_code = discount
+            order.save()
+        return redirect('order:Order_detail', order_id)

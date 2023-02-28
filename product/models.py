@@ -1,8 +1,10 @@
+import decimal
+
 from django.db import models
 from django.urls import reverse
 from ckeditor.fields import RichTextField
 from django.core.validators import MinValueValidator, MaxValueValidator
-
+from decimal import Decimal
 
 # Create your models here.
 
@@ -51,6 +53,9 @@ class Color(models.Model):
         null=True,
         blank=True,
     )
+
+    def __str__(self):
+        return self.get_color_display()
 
 
 class Category(models.Model):
@@ -101,7 +106,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to="product/%Y/%m/", null=True, blank=True)
     Stock = models.IntegerField(validators=[MinValueValidator(0)])
     category = models.ManyToManyField(Category, related_name='products')
-    discount = models.ForeignKey(Discount, on_delete=models.SET_DEFAULT, default=None)
+    discount = models.ForeignKey(Discount, on_delete=models.SET_DEFAULT, default=None, null=True, blank=True)
     slug = models.SlugField(max_length=250, unique=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -116,3 +121,12 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('landing:product_detail', args=[self.slug, ])
+
+    def get_price(self):
+        price = self.price
+        if self.discount:
+            if self.discount.type == 'M':
+                price = price - self.discount.value
+            else:
+                price = price * decimal.Decimal(1 - (self.discount.value / 100))
+        return round(price, 2)

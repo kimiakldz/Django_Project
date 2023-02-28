@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block start %}
+{% endblock %}
+
 {% block content %}
     <!-- Shop Start -->
     <div class="container-fluid pt-5">
@@ -183,12 +186,15 @@
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                                     <h6 class="text-truncate mb-3">{{ product.name }}</h6>
                                     <div class="d-flex justify-content-center">
-                                        <h6>{{ product.price }}</h6>
-                                        {#                                        {% if product.discount_id != 0 %}#}
-                                        {#                                            <h6 class="text-muted ml-2">#}
-                                        {#                                                <del>$123.00</del>#}
-                                        {#                                            </h6>#}
-                                        {#                                        {% endif %}#}
+
+                                        {% if product.discount %}
+                                            <h6>${{ product.get_price }}</h6>
+                                            <h6 class="text-muted ml-2">
+                                                <del>${{ product.price }}</del>
+                                            </h6>
+                                            {% else %}
+                                            <h6>${{ product.price }}</h6>
+                                        {% endif %}
 
                                     </div>
                                 </div>

@@ -1,7 +1,10 @@
+import decimal
+
 from django.db import models
 from accounts.models import User, Address
 from product.models import Product
 from core import settings
+from decimal import Decimal
 
 
 # Create your models here.
@@ -23,7 +26,6 @@ class DiscountCode(models.Model):
 
     def __str__(self):
         return f"{self.type}: {self.code}"
-
 
 
 class Order(models.Model):
@@ -48,11 +50,21 @@ class Order(models.Model):
     total_price = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
     created = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, null=True, blank=True,
-                                related_name='orders')
-    discount_code = models.ForeignKey(DiscountCode, on_delete=models.DO_NOTHING, default=None, null=True, blank=True,)
+                             related_name='orders')
+    discount_code = models.ForeignKey(DiscountCode, on_delete=models.DO_NOTHING, default=None, null=True, blank=True, )
 
     def get_subtotal_price(self):
-        return sum(item.get_cost() for item in self.items.all())
+        subtotal = sum(item.get_cost() for item in self.items.all())
+        return round(subtotal, 2)
+
+    def get_total_price(self):
+        total = sum(item.get_cost() for item in self.items.all())
+        if self.discount_code:
+            if self.discount_code.type == 'M':
+                total = total - self.discount_code.value
+            else:
+                total = total * decimal.Decimal(1 - (self.discount_code.value / 100))
+        return round(total, 2)
 
     class Mete:
         ordering = ('-created')
