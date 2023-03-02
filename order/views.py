@@ -37,8 +37,6 @@ class CartRemoveView(View):
     def get(self, request, product_id):
         cart = Cart(request)
         product = get_object_or_404(Product, id=product_id)
-        print(product)
-        print(type(product))
         cart.remove(product)
         return redirect('order:cart')
 
@@ -50,7 +48,6 @@ class OrderCreateView(LoginRequiredMixin, View):
         for item in cart:
             OrderDetail.objects.create(order=order, product=item['product'], price=item['price'],
                                        quantity=item['quantity'])
-            cart.clear()
             return redirect('order:Order_detail', order.id)
 
 
@@ -81,3 +78,12 @@ class CodeApplyView(LoginRequiredMixin, View):
             order.discount_code = discount
             order.save()
         return redirect('order:Order_detail', order_id)
+
+
+class PlaceOrderView(LoginRequiredMixin, View):
+    def get(self, request, order_id):
+        cart = Cart(request)
+        order = get_object_or_404(Order, id=order_id)
+        order.is_paid = True
+        cart.clear()
+        return redirect('landing:landing')

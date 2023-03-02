@@ -81,7 +81,7 @@
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold">${{ cart.get_total_price }}+10</h5>
+                            <h5 class="font-weight-bold">${{ cart.get_total_price|add:10.00}}</h5>
                         </div>
                         <a class="btn btn-block btn-primary my-3 py-3" href="{% url 'order:Order_creat' %}">Proceed To
                             Checkout</a>

@@ -1,6 +1,6 @@
 from django.db import models
 from django import forms
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from .managers import UserManager
 from core import settings
 from iranian_cities.fields import OstanField, ShahrestanField
@@ -9,7 +9,7 @@ from django.dispatch import receiver
 
 
 # Create your models here.
-class User(AbstractUser):
+class User(AbstractUser, PermissionsMixin):
     """
         Stores users information, inherited from django AbstractUser
     """
@@ -26,7 +26,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
     def __str__(self):
-        return f"{self.__dict__}"
+        return f"{self.first_name} {self.last_name}"
 
     def has_perm(self, perm, obj=None):
         """

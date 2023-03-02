@@ -51,7 +51,7 @@ class UserLoginView(View):
             if user is not None:
                 login(request, user)
                 messages.success(request, 'Logged in successfully', 'success')
-                return redirect('landing:landing')
+                return redirect(request.META.get('HTTP_REFERER'))
             messages.error(request, 'Password is incorrect', 'warning')
         return render(request, self.template_name, {'form': form})
 

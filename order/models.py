@@ -51,7 +51,8 @@ class Order(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, null=True, blank=True,
                              related_name='orders')
-    discount_code = models.ForeignKey(DiscountCode, on_delete=models.DO_NOTHING, default=None, null=True, blank=True, )
+    discount_code = models.ForeignKey(DiscountCode, on_delete=models.DO_NOTHING, default=None, null=True, blank=True)
+    is_paid = models.BooleanField(default=False)
 
     def get_subtotal_price(self):
         subtotal = sum(item.get_cost() for item in self.items.all())
