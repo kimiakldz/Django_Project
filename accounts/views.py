@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
+
+from order.models import Order
 from .forms import UserRegistrationForm, UserCreationForm, UserLoginForm, EditUserForm
 from .models import User, Address
 from django.contrib import messages
@@ -71,7 +73,10 @@ class UserProfileView(LoginRequiredMixin, View):
         user = User.objects.get(id=user_id)
         form = self.form_class(instance=request.user)
         addresses = Address.objects.filter(user_id=user_id)
-        return render(request, self.template_name, {'user': user, 'form': form, 'addresses':addresses})
+        print(addresses)
+        orders = Order.objects.filter(user_id=user_id)
+        print(orders)
+        return render(request, self.template_name, {'user': user, 'form': form, 'addresses':addresses, 'orders':orders})
 
 
 # class UserRegisterVerifyCodeView(View):

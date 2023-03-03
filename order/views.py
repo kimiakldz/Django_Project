@@ -94,10 +94,13 @@ class PlaceOrderView(LoginRequiredMixin, View):
         cart = Cart(request)
         order = get_object_or_404(Order, id=order_id)
         order.is_paid = True
+        order.total_price = order.get_total_price
+        order.address = Address.objects.filter(id=order.user.id)
         cart.clear()
         return redirect('landing:landing')
 
 
-class PlaceOrderAPIView(APIView):
-    def get(self, request):
-        return Response({"name": 'ok'})
+# class PlaceOrderAPIView(APIView):
+#     def get(self, request):
+#         order = request.query_params['order_id']
+#         return Response({"name": order})
