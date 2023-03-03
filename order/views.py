@@ -2,8 +2,10 @@ from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMix
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-
-from accounts.models import Address
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from accounts.forms import EditUserForm
+from accounts.models import Address, User
 from .forms import CartAddForm, DiscountCodeForm
 from .cart import Cart
 from product.models import Product
@@ -54,11 +56,17 @@ class OrderCreateView(LoginRequiredMixin, View):
 
 class OrderDetailView(LoginRequiredMixin, View):
     form_class = DiscountCodeForm
+    form_class2 = EditUserForm
 
-    def get(self, request, order_id, user_id):
+    def get(self, request, order_id):
         order = get_object_or_404(Order, id=order_id)
-        addresses = Address.objects.filter(user_id=user_id)
-        return render(request, 'checkout.html', {'order': order, 'form': self.form_class, 'addresses':addresses})
+        user = User.objects.get(id=order.user.id)
+        print(user)
+        addresses = Address.objects.filter(id=order.user.id)
+        print(addresses)
+        userform = self.form_class2(instance=request.user)
+        return render(request, 'checkout.html',
+                      {'order': order, 'form': self.form_class, 'addresses': addresses, 'userform': userform})
 
 
 class CodeApplyView(LoginRequiredMixin, View):
@@ -88,3 +96,8 @@ class PlaceOrderView(LoginRequiredMixin, View):
         order.is_paid = True
         cart.clear()
         return redirect('landing:landing')
+
+
+class PlaceOrderAPIView(APIView):
+    def get(self, request):
+        return Response({"name": 'ok'})

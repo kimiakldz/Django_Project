@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'order.apps.OrderConfig',
     'accounts.apps.AccountsConfig',
     'iranian_cities',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
