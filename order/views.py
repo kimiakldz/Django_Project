@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 
+from accounts.models import Address
 from .forms import CartAddForm, DiscountCodeForm
 from .cart import Cart
 from product.models import Product
@@ -54,10 +55,10 @@ class OrderCreateView(LoginRequiredMixin, View):
 class OrderDetailView(LoginRequiredMixin, View):
     form_class = DiscountCodeForm
 
-    def get(self, request, order_id):
+    def get(self, request, order_id, user_id):
         order = get_object_or_404(Order, id=order_id)
-        print(order)
-        return render(request, 'checkout.html', {'order': order, 'form': self.form_class})
+        addresses = Address.objects.filter(user_id=user_id)
+        return render(request, 'checkout.html', {'order': order, 'form': self.form_class, 'addresses':addresses})
 
 
 class CodeApplyView(LoginRequiredMixin, View):

@@ -58,7 +58,7 @@ class Address(models.Model):
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.province}-{self.city}-{self.street}-{self.alley}"
+        return f"{self.province}-{self.city}-{self.street}-{self.alley}-{self.num}-{self.postal_code}"
 
 
 # class OtpCode(models.Model):

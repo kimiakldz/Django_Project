@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 
-from .models import User
+from .models import User, Address
 
 
 class UserCreationForm(forms.ModelForm):
@@ -102,3 +102,23 @@ class UserLoginForm(forms.Form):
         'class': 'form-control',
         'placeholder': 'Password'
     }))
+
+
+class EditUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = (
+            'email', 'first_name', 'last_name', 'phone',)
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'form-control form-control-alternative', })}
+
+
+class EditAddressForm(forms.Form):
+    class Meta:
+        model = Address
+        fields = (
+            'province', 'city', 'street', 'alley', 'num', 'postal_code')
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'form-control form-control-alternative', })}

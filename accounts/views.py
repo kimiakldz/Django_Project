@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from .forms import UserRegistrationForm, UserCreationForm, UserLoginForm
-from .models import User
+from .forms import UserRegistrationForm, UserCreationForm, UserLoginForm, EditUserForm
+from .models import User, Address
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -62,6 +62,18 @@ class UserLogoutView(LoginRequiredMixin, View):
         messages.success(request, 'Logged out successfully', 'success')
         return redirect('landing:landing')
 
+
+class UserProfileView(LoginRequiredMixin, View):
+    form_class = EditUserForm
+    template_name = 'profile.html'
+
+    def get(self, request, user_id):
+        user = User.objects.get(id=user_id)
+        form = self.form_class(instance=request.user)
+        addresses = Address.objects.filter(user_id=user_id)
+        return render(request, self.template_name, {'user': user, 'form': form, 'addresses':addresses})
+
+
 # class UserRegisterVerifyCodeView(View):
 #     form_class = VerifyCodeForm
 #     template_name = 'verify.html'
@@ -88,3 +100,14 @@ class UserLogoutView(LoginRequiredMixin, View):
 #         return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
 #     else:
 #         return HttpResponse('Activation link is invalid!')
+class UserEditView(LoginRequiredMixin, View):
+    form_class = EditUserForm
+    template_name = 'profile.html'
+
+    # def get(self, request):
+    #     form = self.form_class
+    #     print('hi', {form})
+    #     return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        pass

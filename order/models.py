@@ -53,6 +53,7 @@ class Order(models.Model):
                              related_name='orders')
     discount_code = models.ForeignKey(DiscountCode, on_delete=models.DO_NOTHING, default=None, null=True, blank=True)
     is_paid = models.BooleanField(default=False)
+    address = models.TextField(default=None, null=True, blank=True)
 
     def get_subtotal_price(self):
         subtotal = sum(item.get_cost() for item in self.items.all())
